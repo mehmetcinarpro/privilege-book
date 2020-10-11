@@ -28,6 +28,7 @@ const HomePage: React.FC<HomePageProps> = () => {
         Header: "Title",
         accessor: "name.title",
         disableSortBy: true,
+        disableGlobalFilter: true,
       },
       {
         Header: "First Name",
@@ -45,6 +46,10 @@ const HomePage: React.FC<HomePageProps> = () => {
         Header: "City",
         accessor: "location.city",
       },
+      {
+        Header: "",
+        accessor: "actions",
+      }
     ],
     []
   );
@@ -67,7 +72,7 @@ const HomePage: React.FC<HomePageProps> = () => {
                     <CategoryCard />
                 </Grid>
             </Grid>
-            <Table columns={columns} data={data} canSort />
+            <Table columns={columns} data={data} canSort canSearch />
         </Layout>
     </>
   )

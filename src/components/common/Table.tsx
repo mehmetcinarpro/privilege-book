@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import "../../styles.css"; 
 import {
-    Column,
-    useExpanded, useGlobalFilter, usePagination, useRowSelect, useSortBy, useTable
+    Column, useExpanded, useGlobalFilter, usePagination, useRowSelect, useSortBy, useTable
 } from 'react-table';
 import MuiTable from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -11,14 +10,35 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import { GlobalFilter } from './GlobalFilter';
+
+const SortIcon = ({ isSorted, isSortedDesc }: { isSorted: boolean, isSortedDesc: boolean | undefined }) => {
+    if (isSorted === undefined) { return null; }
+    if (isSorted) {
+      return isSortedDesc
+        ? <ArrowDownwardIcon
+        style={{
+            fontSize: 14,
+            paddingLeft: 5
+        }}
+    />
+        : <ArrowUpwardIcon
+        style={{
+            fontSize: 14,
+            paddingLeft: 5
+        }}
+    />;
+    }
+    return null;
+  };
  
 export interface TableProps { 
     columns: Column<object>[];
     data: object[];
     canSort?: boolean;
-    search?: boolean;
+    canSearch?: boolean;
     pagination?: boolean;
-    expand?: boolean;
+    canExpand?: boolean;
     hiddenColumns?: string[];
     getRowProps?: (row: any) => void;
     getCellProps?: (cell: any) => void;
@@ -32,9 +52,9 @@ const defaultPropGetter = () => ({})
 export const Table: React.FC<TableProps> = ({
     columns,
     data,
-    search = false,
+    canSearch = false,
     canSort = false,
-    expand = false,
+    canExpand = false,
     pagination = false,
     hiddenColumns,
     getRowProps = defaultPropGetter,
@@ -73,10 +93,10 @@ export const Table: React.FC<TableProps> = ({
             autoResetExpanded: false,
                 initialState: { pageIndex: 0 }
         },
-        search ? useGlobalFilter : () => { },
+        canSearch ? useGlobalFilter : () => { },
         canSort ? useSortBy : () => { },
+        canExpand ? useExpanded : () => { },
         pagination ? usePagination : () => { },
-        expand ? useExpanded : () => { },
         useRowSelect
     );
     
@@ -123,25 +143,7 @@ export const Table: React.FC<TableProps> = ({
                                     <span>{column.render("Header")}</span>
                                     {canSort && (
                                         <span>
-                                            {column.isSorted ? (
-                                                column.isSortedDesc ? (
-                                                    <ArrowDownwardIcon
-                                                        style={{
-                                                            fontSize: 14,
-                                                            paddingLeft: 5
-                                                        }}
-                                                    />
-                                                ) : (
-                                                        <ArrowUpwardIcon
-                                                            style={{
-                                                                fontSize: 14,
-                                                                paddingLeft: 5
-                                                            }}
-                                                        />
-                                                    )
-                                            ) : (
-                                                    ""
-                                                )}
+                                            <SortIcon isSorted={column.isSorted} isSortedDesc={column.isSortedDesc} />
                                         </span>
                                     )}
                                 </TableCell>
@@ -210,7 +212,11 @@ export const Table: React.FC<TableProps> = ({
 
 
     return (
-        <>        
+        <>  
+            <GlobalFilter
+                globalFilter={state.globalFilter}
+                setGlobalFilter={setGlobalFilter}
+            />      
             {renderTable()}
         </>
     )
