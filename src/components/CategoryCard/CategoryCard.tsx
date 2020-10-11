@@ -15,7 +15,7 @@ const useStyles = makeStyles({
     },
   });
  
-export interface CategoryCardProps { 
+interface CategoryCardProps { 
 } 
  
 const CategoryCard: React.FC<CategoryCardProps> = () => {

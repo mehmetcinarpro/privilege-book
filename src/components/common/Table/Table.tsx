@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import "../../styles.css"; 
+import "../../../styles.css"; 
 import {
     Column, useExpanded, useGlobalFilter, usePagination, useRowSelect, useSortBy, useTable
 } from 'react-table';
@@ -32,7 +32,7 @@ const SortIcon = ({ isSorted, isSortedDesc }: { isSorted: boolean, isSortedDesc:
     return null;
   };
  
-export interface TableProps { 
+interface TableProps { 
     columns: Column<object>[];
     data: object[];
     canSort?: boolean;

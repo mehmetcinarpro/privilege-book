@@ -1,15 +1,23 @@
 import Grid from '@material-ui/core/Grid';
 import React, { useEffect, useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import CategoryCard from '../../components/CategoryCard/CategoryCard';
-import { Table } from '../../components/common';
+import { Table } from '../../components/common/Table';
 import Header from '../../components/Header/Header';
 import Layout from '../../components/Layout/Layout';
  
+interface IFormInput {
+  firstName: string;
+  lastName: string;
+  age: number;
+}
 export interface HomePageProps { 
 } 
  
 const HomePage: React.FC<HomePageProps> = () => {    
   const [data, setData] = useState<any[]>([]);
+  const { register, handleSubmit } = useForm<IFormInput>();
+  const onSubmit = (data: IFormInput) => console.log(data);
 
   useEffect(() => {
     const doFetch = async () => {
@@ -54,13 +62,18 @@ const HomePage: React.FC<HomePageProps> = () => {
     []
   );
 
-  
   console.log("TABLE RENDER");
-
   return (
     <>
         <Header />
         <Layout>
+              
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <input name="firstName" ref={register({ required: true, maxLength: 20 })} />
+                <input name="lastName" ref={register({ pattern: /^[A-Za-z]+$/i })} />
+                <input name="age" type="number" ref={register({ min: 18, max: 99 })} />
+                <input type="submit" />
+              </form>
             <Grid container spacing={2}>
                 <Grid item md={4}>
                     <CategoryCard />
