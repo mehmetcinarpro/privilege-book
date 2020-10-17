@@ -1,14 +1,18 @@
-import Container from '@material-ui/core/Container';
-import React from 'react'
- 
-const Layout: React.FC = ({children}) => {
+import React from "react";
+
+import Container from "@material-ui/core/Container";
+
+import Header from "../Header/Header";
+
+const Layout: React.FC = ({ children }) => {
   return (
-    <Container>
-        <>
-        {children}
-        </>
-    </Container>
-  )
-}
- 
+    <>
+      <Header />
+      <Container>
+        <>{children}</>
+      </Container>
+    </>
+  );
+};
+
 export default Layout;

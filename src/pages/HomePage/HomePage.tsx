@@ -1,20 +1,19 @@
-import Grid from '@material-ui/core/Grid';
-import React, { useEffect, useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import CategoryCard from '../../components/CategoryCard/CategoryCard';
-import { Table } from '../../components/common/Table';
-import Header from '../../components/Header/Header';
-import Layout from '../../components/Layout/Layout';
- 
+import React, { useEffect, useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
+
+import Grid from "@material-ui/core/Grid";
+
+import CategoryCard from "../../components/CategoryCard/CategoryCard";
+import { Table } from "../../components/common/Table";
+
 interface IFormInput {
   firstName: string;
   lastName: string;
   age: number;
 }
-export interface HomePageProps { 
-} 
- 
-const HomePage: React.FC<HomePageProps> = () => {    
+export interface HomePageProps {}
+
+const HomePage: React.FC<HomePageProps> = () => {
   const [data, setData] = useState<any[]>([]);
   const { register, handleSubmit } = useForm<IFormInput>();
   const onSubmit = (data: IFormInput) => console.log(data);
@@ -26,7 +25,7 @@ const HomePage: React.FC<HomePageProps> = () => {
       const contacts = body.results;
       console.log(contacts);
       setData(contacts);
-    }
+    };
     doFetch();
   }, []);
 
@@ -57,7 +56,7 @@ const HomePage: React.FC<HomePageProps> = () => {
       {
         Header: "",
         accessor: "actions",
-      }
+      },
     ],
     []
   );
@@ -65,30 +64,26 @@ const HomePage: React.FC<HomePageProps> = () => {
   console.log("TABLE RENDER");
   return (
     <>
-        <Header />
-        <Layout>
-              
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <input name="firstName" ref={register({ required: true, maxLength: 20 })} />
-                <input name="lastName" ref={register({ pattern: /^[A-Za-z]+$/i })} />
-                <input name="age" type="number" ref={register({ min: 18, max: 99 })} />
-                <input type="submit" />
-              </form>
-            <Grid container spacing={2}>
-                <Grid item md={4}>
-                    <CategoryCard />
-                </Grid>
-                <Grid item md={4}>
-                    <CategoryCard />
-                </Grid>
-                <Grid item md={4}>
-                    <CategoryCard />
-                </Grid>
-            </Grid>
-            <Table columns={columns} data={data} canSort canSearch />
-        </Layout>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <input name="firstName" ref={register({ required: true, maxLength: 20 })} />
+        <input name="lastName" ref={register({ pattern: /^[A-Za-z]+$/i })} />
+        <input name="age" type="number" ref={register({ min: 18, max: 99 })} />
+        <input type="submit" />
+      </form>
+      <Grid container spacing={2}>
+        <Grid item md={4}>
+          <CategoryCard />
+        </Grid>
+        <Grid item md={4}>
+          <CategoryCard />
+        </Grid>
+        <Grid item md={4}>
+          <CategoryCard />
+        </Grid>
+      </Grid>
+      <Table columns={columns} data={data} canSort canSearch />
     </>
-  )
-}
- 
+  );
+};
+
 export default HomePage;
